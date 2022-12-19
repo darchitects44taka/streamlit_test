@@ -103,6 +103,9 @@ st.sidebar.write('<span style="font-weight:bold"> Create WordCloud </span>',unsa
 button = st.sidebar.button('start')
 st.sidebar.text('')
 st.sidebar.text('')
+st.sidebar.text('')
+st.sidebar.text('')
+st.sidebar.text('')
 
 # Main
 st.title('Review Analysis')
