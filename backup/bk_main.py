@@ -48,16 +48,16 @@ for page in page_count:
 
     # データ格納
     details = {}
-    details['レート'] = rate
-    details['口コミ'] = review
+    details['rate'] = rate
+    details['review'] = review
     get_data.append(details)
 
 df = pd.DataFrame(get_data)
 
 #WordCloud作成
 for i in range(0,6):
-    df_late = df[df['レート'] == i]
-    npt = nlplot.NLPlot(df_late, target_col='口コミ')
+    df_late = df[df['rate'] == i]
+    npt = nlplot.NLPlot(df_late, target_col='review')
     stopwords = npt.get_stopword(top_n=0, min_freq=0)
     st.write(f'総合レート{i}')
     fig_wc = npt.wordcloud(
