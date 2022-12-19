@@ -56,7 +56,7 @@ def make_wordcloud(df,rate,top_n,min_freq):
         df_late = df[df['rate'] == i]
         npt = nlplot.NLPlot(df_late, target_col='review')
         stopwords = npt.get_stopword(top_n=top_n, min_freq=min_freq)
-        st.write(f'<span style="background-color:pink;font-weight:bold"> 　Rate　:　{i} 　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</span>',unsafe_allow_html = True)
+        st.write(f'<span style="background-color:pink;font-weight:bold"> 　Rate　:　{i} 　　</span>',unsafe_allow_html = True)
         fig_wc = npt.wordcloud(
             width=1000,
             height=600,
@@ -101,6 +101,8 @@ min_freq = st.sidebar.slider('Frequent Subordinate Words', 0, 10, 0)
 st.sidebar.text('')
 st.sidebar.write('<span style="font-weight:bold"> Create WordCloud </span>',unsafe_allow_html = True)
 button = st.sidebar.button('start')
+st.sidebar.text('')
+st.sidebar.text('')
 
 # Main
 st.title('Review Analysis')
