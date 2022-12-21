@@ -4,8 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import nlplot
-from janome.tokenizer import Tokenizer
-import collections
 import matplotlib.pyplot as plt
 
 # scraiping
@@ -52,27 +50,8 @@ def get_scraipingdata(page_count):
 # WordCloud
 def make_wordcloud(df,rate,top_n,min_freq):
     for i in rate:
-        df_rates = df[df['rate'] == i]
-
-        text = "".join(df_rates['review'])
-
-        t = Tokenizer()
-        results = t.tokenize(text, wakati=False)
-
-        # 頻出単語を取得
-        sent = []
-        for token in results:
-            if token.part_of_speech.split(',')[0] in ["名詞"]:
-                # 名詞だけをリストに追加する
-                sent.append(token.surface)
-            # 動詞（の原型），形容詞，副詞もリストに加えたい場合は次の２行を有効にする
-        #    if token.part_of_speech.split(',')[0] in ["動詞","副詞","形容詞"]:
-        #       sent.append(token.base_form) # 原形
-        df_sent = pd.DataFrame()
-        df_sent['word'] = pd.DataFrame(sent)
-
-
-        npt = nlplot.NLPlot(df_sent, target_col='word')
+        df_late = df[df['rate'] == i]
+        npt = nlplot.NLPlot(df_late, target_col='review')
         stopwords = npt.get_stopword(top_n=top_n, min_freq=min_freq)
         st.write(f'<span style="background-color:pink;font-weight:bold"> 　Rate　:　{i} 　　</span>',unsafe_allow_html = True)
         fig_wc = npt.wordcloud(
