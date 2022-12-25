@@ -71,25 +71,29 @@ def make_wordcloud(df,rate,top_n,min_freq):
         df_sent = pd.DataFrame()
         df_sent['word'] = pd.DataFrame(sent)
 
-
         npt = nlplot.NLPlot(df_sent, target_col='word')
         stopwords = npt.get_stopword(top_n=top_n, min_freq=min_freq)
+
         st.write(f'<span style="background-color:pink;font-weight:bold"> 　Rate　:　{i} 　　</span>',unsafe_allow_html = True)
-        fig_wc = npt.wordcloud(
-            width=1000,
-            height=600,
-            max_words=100,
-            max_font_size=100,
-            colormap='tab20_r',
-            stopwords=stopwords,
-            mask_file=None,
-            save=False
-        )
-        plt.figure(figsize=(15, 25))
-        plt.imshow(fig_wc, interpolation='bilinear')
-        plt.axis('off')
-        st.set_option('deprecation.showPyplotGlobalUse', False)
-        st.pyplot()
+
+        try:
+            fig_wc = npt.wordcloud(
+                width=1000,
+                height=600,
+                max_words=100,
+                max_font_size=100,
+                colormap='tab20_r',
+                stopwords=stopwords,
+                mask_file=None,
+                save=False
+            )
+            plt.figure(figsize=(15, 25))
+            plt.imshow(fig_wc, interpolation='bilinear')
+            plt.axis('off')
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot()
+        except:
+            st.error('Stopwordsの設定数が文字リスト種類の上限を超過しています', icon=None)  
 
 # Initiate
 df = pd.DataFrame()
@@ -112,10 +116,11 @@ if st.sidebar.checkbox(label = 'Rate:4'):
 if st.sidebar.checkbox(label = 'Rate:5'):
     rate.append(5)
 st.sidebar.text('')
-st.sidebar.write('<span style="font-weight:bold"> Frequent Word Setting </span>',unsafe_allow_html = True)
-top_n = st.sidebar.slider('Top Frequent Words', 0, 100, 0)
+st.sidebar.write('<span style="font-weight:bold"> StopWords Setting </span>',unsafe_allow_html = True)
+st.sidebar.text('頻出単語を設定した数だけ除外します')
+top_n = st.sidebar.slider('頻出上位単語', 0, 100, 0)
 st.sidebar.text('')
-min_freq = st.sidebar.slider('Frequent Subordinate Words', 0, 100, 0)
+min_freq = st.sidebar.slider('頻出下位単語', 0, 100, 0)
 st.sidebar.text('')
 st.sidebar.write('<span style="font-weight:bold"> Create WordCloud </span>',unsafe_allow_html = True)
 button = st.sidebar.button('start')
@@ -129,7 +134,7 @@ st.sidebar.text('')
 st.title('Review Analysis')
 
 if rate == []:
-    st.error('Rate is not set', icon=None)    
+    st.error('Rateを選択してください', icon=None)    
 else:
     if button:
         df = get_scraipingdata(page_count)
